@@ -4,7 +4,8 @@
   "description": "Vehicle Booking Sample App",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "cd app && npm run test && cd ../api && npm run test && cd ..",
+    "build": "cd app && npm run build && cd ../api && npm run build && cd .."
   },
   "repository": {
     "type": "git",
