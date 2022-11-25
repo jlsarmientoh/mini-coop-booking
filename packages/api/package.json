@@ -1,10 +1,9 @@
 {
-  "name": "api",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "name": "booking-api",
+  "version": "1.0.0",
+  "description": "A sample API for vehicle Booking",
+  "main": "index.js",
   "private": true,
-  "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -67,5 +66,21 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jlsarmientoh/mini-coop-booking.git"
+  },
+  "keywords": [
+    "API",
+    "backend",
+    "nestjs",
+    "database"
+  ],
+  "author": "Jorge Sarmiento",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jlsarmientoh/mini-coop-booking/issues"
+  },
+  "homepage": "https://github.com/jlsarmientoh/mini-coop-booking#readme"
 }

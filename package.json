@@ -4,8 +4,8 @@
   "description": "Vehicle Booking Sample App",
   "main": "index.js",
   "scripts": {
-    "test": "cd app && npm run test && cd ../api && npm run test && cd ..",
-    "build": "cd app && npm run build && cd ../api && npm run build && cd .."
+    "test": "npm run test --workspaces",
+    "build": "npm run build --workspaces"
   },
   "repository": {
     "type": "git",
@@ -19,5 +19,9 @@
   "bugs": {
     "url": "https://github.com/jlsarmientoh/mini-coop-booking/issues"
   },
-  "homepage": "https://github.com/jlsarmientoh/mini-coop-booking#readme"
+  "homepage": "https://github.com/jlsarmientoh/mini-coop-booking#readme",
+  "workspaces": [
+    "packages/api",
+    "packages/ui"
+  ]
 }
