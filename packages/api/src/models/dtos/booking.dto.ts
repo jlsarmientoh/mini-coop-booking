@@ -1,15 +1,15 @@
 export class BookingDto {
-    bookinId: string;
+    bookingId: string;
     vehicleId: string;
     plate: string;
     date: string;
 
     constructor(
-        bookinId: string,
+        bookingId: string,
         vehicleId: string,
         plate: string,
         date: string) {
-            this.bookinId = bookinId;
+            this.bookingId = bookingId;
             this.vehicleId = vehicleId;
             this.plate = plate;
             this.date = date;
