@@ -1,0 +1,27 @@
+{
+  "name": "mini-coop-booking",
+  "version": "1.0.0",
+  "description": "Vehicle Booking Sample App",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test --workspaces",
+    "build": "npm run build --workspaces"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jlsarmientoh/mini-coop-booking.git"
+  },
+  "keywords": [
+    "doublenines"
+  ],
+  "author": "Jorge Sarmiento jlsarmientoh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jlsarmientoh/mini-coop-booking/issues"
+  },
+  "homepage": "https://github.com/jlsarmientoh/mini-coop-booking#readme",
+  "workspaces": [
+    "packages/api",
+    "packages/ui"
+  ]
+}
