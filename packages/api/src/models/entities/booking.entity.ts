@@ -1,7 +1,7 @@
-import { Booking } from "../entities/booking.entity";
-import { DTO } from "./dto";
+import { BookingDto } from "../dtos/booking.dto";
+import { Entity } from "./entity";
 
-export class BookingDto implements DTO {
+export class Booking implements Entity {
     bookingId: string;
     vehicleId: string;
     plate: string;
@@ -18,7 +18,7 @@ export class BookingDto implements DTO {
             this.date = date;
         }
     
-    toEntity(): Booking {
-        return new Booking(this.bookingId, this.vehicleId, this.plate, this.date);
+    toDTO(): BookingDto {
+        return new BookingDto(this.bookingId, this.vehicleId, this.plate, this.date);
     }
 }
