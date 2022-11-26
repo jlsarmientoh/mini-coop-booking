@@ -14,7 +14,6 @@ export class SQLRepository implements Repository<Booking> {
         const prepare = async () => {
             await this.initDb();
             await this.populate();
-            //console.log('Database ready!!!');
         };
         prepare();
     }
@@ -60,8 +59,14 @@ export class SQLRepository implements Repository<Booking> {
         `);
     }
 
-    async save(T: any): Promise<void> {
-        throw new Error("Method not implemented.");
+    async save(booking: Booking): Promise<void> {
+        await this.db.query(sql`
+            INSERT INTO BOOKINGS (
+                ID,
+                VEHICLE_ID,
+                DATE                
+            ) VALUES (${crypto.randomUUID()}, ${booking.vehicleId}, ${booking.date});
+        `);
     }
     async findAll(limit: number): Promise<Booking[]> {
         const bookings: Array<Booking> = new Array<Booking>();
@@ -115,10 +120,18 @@ export class SQLRepository implements Repository<Booking> {
             throw new Error("No Bookings Found.");
         }
     }
-    async update(T: any): Promise<void> {
-        throw new Error("Method not implemented.");
+    async update(booking: Booking): Promise<void> {
+        await this.db.query(sql`
+            UPDATE BOOKINGS 
+                SET VEHICLE_ID = ${booking.vehicleId},
+                SET DATE = ${booking.date}
+            WHERE ID = ${booking.bookingId};
+        `);
     }
     async delete(id: string): Promise<void> {
-        throw new Error("Method not implemented.");
+        await this.db.query(sql`
+            DELETE FRMOM BOOKINGS 
+            WHERE ID = ${id};
+        `);
     }
 }

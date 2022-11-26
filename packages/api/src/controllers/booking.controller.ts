@@ -31,16 +31,19 @@ export class BookingController {
 
     @Post()
     async createBooking(@Body() bookingDto: BookingDto): Promise<string> {
+        await this.createBooking(bookingDto);
         return `new booking created`;
     }
 
     @Put(':id')
     async modifyBooking(@Param('id') id: string, @Body() bookingDto: BookingDto): Promise<string> {
-        return `Modified this booking ${bookingDto.bookingId}`;
+        await this.modifyBooking(id, bookingDto);
+        return `Modified this booking ${bookingDto.bookingId}`;        
     }
     
     @Delete(':id')
     async deleteBooking(@Param('id') id: string): Promise<string> {
+        await this.deleteBooking(id);
         return `Deleted this booking ${id}`
     }
 }
