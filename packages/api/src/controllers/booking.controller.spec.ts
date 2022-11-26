@@ -5,17 +5,17 @@ import { BookingDto } from '../models/dtos/booking.dto';
 import { BookingService } from '../services/booking.service';
 import { SQLRepository } from '../respositorioes/sql.respository';
 import { MongoRespository } from '../respositorioes/mongo.repository';
+import { DatabaseModule } from '../database.module';
 
 describe('BookingController', () => {
   let controller: BookingController;
   let service: BookingService;
-  let sqlRepository: SQLRepository;
-  let mongoRespository: MongoRespository;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
+      imports: [DatabaseModule],
       controllers: [BookingController],
-      providers: [AppService, BookingService, SQLRepository, MongoRespository],
+      providers: [AppService, BookingService, MongoRespository],
     }).compile();
 
     controller = app.get<BookingController>(BookingController);

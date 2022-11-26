@@ -4,6 +4,7 @@ import { BookingService } from '../services/booking.service';
 import { SQLRepository } from '../respositorioes/sql.respository';
 import { MongoRespository } from '../respositorioes/mongo.repository';
 import { Booking } from '../models/entities/booking.entity';
+import { DatabaseModule } from '../database.module';
 
 describe('BookingService', () => {
   let service: BookingService;
@@ -12,11 +13,12 @@ describe('BookingService', () => {
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      providers: [BookingService, SQLRepository, MongoRespository],
+      imports: [DatabaseModule],
+      providers: [BookingService, MongoRespository],
     }).compile();
 
     service = app.get<BookingService>(BookingService);
-    sqlRepository = app.get<SQLRepository>(SQLRepository);
+    sqlRepository = app.get<SQLRepository>('SQL');
     mongoRespository = app.get<MongoRespository>(MongoRespository);
   });
 
