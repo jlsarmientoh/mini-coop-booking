@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run test --workspaces",
-    "build": "npm run build --workspaces"
+    "it": "npm run test:e2e -w ./packages/api",
+    "test:api": "npm run test -w ./packages/api",
+    "test:ui": "npm run test -w ./packages/ui",
+    "build": "npm run build --workspaces",
+    "start:api": "npm start -w ./packages/api"
   },
   "repository": {
     "type": "git",
