@@ -47,21 +47,27 @@ describe('BookingController', () => {
       expect(actual).toBe(expected);
     });
 
-    /*it('should create a new booking', () => {
+    it('should create a new booking', async () => {
         const expectedResult = 'new booking created';
         const newBooking = new BookingDto(null, '0000-1111', 'ABC123', '01-12-2022');
-        expect(controller.createBooking(newBooking)).toBe(expectedResult);
+        jest.spyOn(service, 'saveOrUpdateBooking').mockImplementation(async () => {});
+
+        expect( await controller.createBooking(newBooking)).toBe(expectedResult);
     });
 
-    it('should modify a booking', () => {
+    it('should modify a booking', async () => {
         const expectedResult = 'Modified this booking 2222-3333';
         const editableBooking = new BookingDto('2222-3333', '0000-1111', 'ABC123', '01-12-2022');
-        expect(controller.modifyBooking('2222-3333', editableBooking)).toBe(expectedResult);
+        jest.spyOn(service, 'saveOrUpdateBooking').mockImplementation(async () => {});
+
+        expect( await controller.modifyBooking('2222-3333', editableBooking)).toBe(expectedResult);
     });
 
-    it('should delete a booking', () => {
+    it('should delete a booking', async () => {
         const expectedResult = 'Deleted this booking 2222-3333';
-        expect(controller.deleteBooking('2222-3333')).toBe(expectedResult);
-    });*/
+        jest.spyOn(service, 'deleteBooking').mockImplementation(async () => {});
+
+        expect( await controller.deleteBooking('2222-3333')).toBe(expectedResult);
+    });
   });
 });
