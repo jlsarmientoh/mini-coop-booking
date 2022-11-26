@@ -67,4 +67,18 @@ describe('SQLRepository', () => {
             }, 1000);
         });
     });
+
+    describe('delete', () => {
+        it('Should delete an existing Booking', async () => {
+            setTimeout( async () => {
+                const limit: number = 2;
+                const initialResult: Booking[] = await repository.findAll(limit);
+                const bookingToDelete: Booking = initialResult[0];
+                
+                await repository.delete(bookingToDelete.bookingId);
+                
+                expect(await repository.find(bookingToDelete.bookingId)).toThrow('No Bookings Found.');
+            }, 1000);
+        });
+    });
 });
