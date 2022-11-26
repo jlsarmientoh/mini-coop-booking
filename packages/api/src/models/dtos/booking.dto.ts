@@ -1,10 +1,19 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Booking } from "../entities/booking.entity";
 import { DTO } from "./dto";
 
 export class BookingDto implements DTO {
+    
+    @ApiProperty()
     bookingId: string;
+
+    @ApiProperty()
     vehicleId: string;
+
+    @ApiProperty()
     plate: string;
+
+    @ApiProperty()
     date: string;
 
     constructor(
