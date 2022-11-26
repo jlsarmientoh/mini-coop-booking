@@ -31,19 +31,21 @@ export class BookingController {
 
     @Post()
     async createBooking(@Body() bookingDto: BookingDto): Promise<string> {
-        await this.createBooking(bookingDto);
+        console.log(JSON.stringify(bookingDto));
+        await this.bookingService.saveOrUpdateBooking(bookingDto);
         return `new booking created`;
     }
 
     @Put(':id')
     async modifyBooking(@Param('id') id: string, @Body() bookingDto: BookingDto): Promise<string> {
-        await this.modifyBooking(id, bookingDto);
+        bookingDto.bookingId = id;
+        await this.bookingService.saveOrUpdateBooking(bookingDto);
         return `Modified this booking ${bookingDto.bookingId}`;        
     }
     
     @Delete(':id')
     async deleteBooking(@Param('id') id: string): Promise<string> {
-        await this.deleteBooking(id);
+        await this.bookingService.deleteBooking(id);
         return `Deleted this booking ${id}`
     }
 }

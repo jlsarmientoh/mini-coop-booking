@@ -26,7 +26,7 @@ describe('AppController (e2e)', () => {
   it('/api/bookings (GET)', () => {
     return request(app.getHttpServer())
       .get('/api/bookings?limit=1')
-      .expect(500);
+      .expect(200);
   });
 
   it('/api/bookings/:id (GET)', () => {
@@ -38,20 +38,20 @@ describe('AppController (e2e)', () => {
   it('/api/bookings (POST)', () => {
     return request(app.getHttpServer())
       .post('/api/bookings')
-      .send(new BookingDto(null, "123", "ABC123", "123456789"))
-      .expect(500);
+      .send(new BookingDto(null, "123", "ABC123", Date.now().toString()))
+      .expect(201);
   });
 
   it('/api/bookings (PUT)', () => {
     return request(app.getHttpServer())
       .put('/api/bookings/abc')
       .send(new BookingDto(null, "123", "ABC123", "123456789"))
-      .expect(500);
+      .expect(200);
   });
 
   it('/api/bookings (Delete)', () => {
     return request(app.getHttpServer())
       .delete('/api/bookings/abc')
-      .expect(500);
+      .expect(200);
   });
 });

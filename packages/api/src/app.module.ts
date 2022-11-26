@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './controllers/app.controller';
 import { BookingController } from './controllers/booking.controller';
+import { DatabaseModule } from './database.module';
 import { MongoRespository } from './respositorioes/mongo.repository';
-import { SQLRepository } from './respositorioes/sql.respository';
 import { AppService } from './services/app.service';
 import { BookingService } from './services/booking.service';
 
 @Module({
-  imports: [],
+  imports: [DatabaseModule],
   controllers: [AppController, BookingController],
-  providers: [AppService, BookingService, MongoRespository, SQLRepository],
+  providers: [AppService, BookingService, MongoRespository],
 })
 export class AppModule {}

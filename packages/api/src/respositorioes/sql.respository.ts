@@ -11,11 +11,11 @@ export class SQLRepository implements Repository<Booking> {
 
     constructor() {
         this.db = connect()
-        const prepare = async () => {
+        /*const prepare = async () => {
             await this.initDb();
             await this.populate();
         };
-        prepare();
+        prepare();*/
     }
 
     async initDb() {
@@ -116,21 +116,18 @@ export class SQLRepository implements Repository<Booking> {
                 results[0].DATE
             );
         } else {
-            console.log(JSON.stringify(results));
             throw new Error("No Bookings Found.");
         }
     }
     async update(booking: Booking): Promise<void> {
-        await this.db.query(sql`
-            UPDATE BOOKINGS 
-                SET VEHICLE_ID = ${booking.vehicleId},
-                SET DATE = ${booking.date}
-            WHERE ID = ${booking.bookingId};
-        `);
+        await this.db.query(sql`UPDATE BOOKINGS SET 
+        VEHICLE_ID = ${booking.vehicleId},
+        DATE = ${booking.date} 
+        WHERE ID = ${booking.bookingId};`);
     }
     async delete(id: string): Promise<void> {
         await this.db.query(sql`
-            DELETE FRMOM BOOKINGS 
+            DELETE FROM BOOKINGS 
             WHERE ID = ${id};
         `);
     }
