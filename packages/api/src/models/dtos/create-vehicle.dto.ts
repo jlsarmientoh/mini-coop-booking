@@ -1,11 +1,13 @@
-import { IEntity } from "../entities/entity";
+import { ApiProperty } from "@nestjs/swagger";
 import { Vehicle } from "../entities/vehicle.entity";
 import { DTO } from "./dto";
 
 export class CreateVehicleDto implements DTO {
     
+    @ApiProperty()
     plate: string;
 
+    @ApiProperty()
     brand: string;
 
     toEntity(): Vehicle {

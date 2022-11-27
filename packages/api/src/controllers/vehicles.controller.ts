@@ -4,7 +4,7 @@ import { UpdateVehicleDto } from '../models/dtos/update-vehicle.dto';
 import { VehicleDto } from '../models/dtos/vehicle.dto';
 import { VehicleService } from '../services/vehicle.service';
 
-@Controller('vehicles')
+@Controller('api/vehicles')
 export class VehiclesController {
   constructor(private readonly vehicleService: VehicleService) {}
 
