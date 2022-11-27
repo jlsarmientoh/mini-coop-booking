@@ -1,7 +1,7 @@
 import { BookingDto } from "../dtos/booking.dto";
-import { Entity } from "./entity";
+import { IEntity } from "./entity";
 
-export class Booking implements Entity {
+export class Booking implements IEntity {
     bookingId: string;
     vehicleId: string;
     plate: string;

@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { BookingDto } from "src/models/dtos/booking.dto";
+import { BookingDto } from "../models/dtos/booking.dto";
 import { Booking } from "../models/entities/booking.entity";
 import { MongoRespository } from "../respositorioes/mongo.repository";
 import { SQLRepository } from "../respositorioes/sql.respository";
@@ -30,7 +30,7 @@ export class BookingService {
     }
 
     async saveOrUpdateBooking(booking: BookingDto): Promise<void> {
-        const entity: Booking = new Booking(booking.bookingId, booking.vehicleId, booking.plate, booking.date);
+        const entity: Booking = booking.toEntity();
         if(booking.bookingId == null) {
             this.sqlRepository.save(entity);
         } else {
