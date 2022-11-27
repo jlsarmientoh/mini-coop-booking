@@ -9,7 +9,8 @@
     "test:api": "npm run test -w ./packages/api",
     "test:ui": "npm run test -w ./packages/ui",
     "build": "npm run build --workspaces",
-    "start:api": "npm start -w ./packages/api"
+    "start:api": "npm start -w ./packages/api",
+    "start:ui": "npm start -w ./packages/ui"
   },
   "repository": {
     "type": "git",
