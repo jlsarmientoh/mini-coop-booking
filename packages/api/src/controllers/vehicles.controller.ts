@@ -1,34 +1,35 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { VehiclesService } from './vehicles.service';
-import { CreateVehicleDto } from './dto/create-vehicle.dto';
-import { UpdateVehicleDto } from './dto/update-vehicle.dto';
+import { CreateVehicleDto } from '../models/dtos/create-vehicle.dto';
+import { UpdateVehicleDto } from '../models/dtos/update-vehicle.dto';
+import { VehicleDto } from '../models/dtos/vehicle.dto';
+import { VehicleService } from '../services/vehicle.service';
 
 @Controller('vehicles')
 export class VehiclesController {
-  constructor(private readonly vehiclesService: VehiclesService) {}
+  constructor(private readonly vehicleService: VehicleService) {}
 
   @Post()
-  create(@Body() createVehicleDto: CreateVehicleDto) {
-    return this.vehiclesService.create(createVehicleDto);
+  async create(@Body() createVehicleDto: CreateVehicleDto): Promise<VehicleDto> {
+    return await this.vehicleService.create(createVehicleDto);
   }
 
   @Get()
-  findAll() {
-    return this.vehiclesService.findAll();
+  async findAll(): Promise<VehicleDto[]> {
+    return await this.vehicleService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.vehiclesService.findOne(+id);
+  async findOne(@Param('id') id: string): Promise<VehicleDto> {
+    return await this.vehicleService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVehicleDto: UpdateVehicleDto) {
-    return this.vehiclesService.update(+id, updateVehicleDto);
+  async update(@Param('id') id: string, @Body() updateVehicleDto: UpdateVehicleDto): Promise<VehicleDto> {
+    return await this.vehicleService.update(id, updateVehicleDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.vehiclesService.remove(+id);
+  async remove(@Param('id') id: string):Promise<VehicleDto> {
+    return await this.vehicleService.remove(id);
   }
 }

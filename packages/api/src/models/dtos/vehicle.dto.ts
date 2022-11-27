@@ -1,4 +1,3 @@
-import { IEntity } from "../entities/entity";
 import { Vehicle } from "../entities/vehicle.entity";
 import { DTO } from "./dto";
 

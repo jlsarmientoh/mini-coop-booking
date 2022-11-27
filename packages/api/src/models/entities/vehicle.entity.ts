@@ -1,5 +1,4 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { DTO } from '../dtos/dto';
 import { VehicleDto } from '../dtos/vehicle.dto';
 import { IEntity } from './entity';
 
@@ -22,7 +21,7 @@ export class Vehicle implements IEntity {
         this.plate = plate;
         this.brand = brand;
     }
-    toDTO(): DTO {
+    toDTO(): VehicleDto {
         return new VehicleDto(this.id, this.plate, this.brand);
     }
 }
