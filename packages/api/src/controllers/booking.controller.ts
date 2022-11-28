@@ -22,30 +22,22 @@ export class BookingController {
 
     @Get(':id')
     async getBooking(@Param('id') id: string): Promise<BookingDto> {
-        try {
-            return await this.bookingService.findBooking(id); 
-        } catch (error) {
-            throw new NotFoundException(error.message);
-        }
+        return await this.bookingService.findBooking(id); 
     }
 
     @Post()
-    async createBooking(@Body() bookingDto: BookingDto): Promise<string> {
-        console.log(JSON.stringify(bookingDto));
-        await this.bookingService.saveOrUpdateBooking(bookingDto);
-        return `new booking created`;
+    async createBooking(@Body() bookingDto: BookingDto): Promise<BookingDto> {
+        return await this.bookingService.saveOrUpdateBooking(bookingDto);
     }
 
     @Put(':id')
-    async modifyBooking(@Param('id') id: string, @Body() bookingDto: BookingDto): Promise<string> {
+    async modifyBooking(@Param('id') id: string, @Body() bookingDto: BookingDto): Promise<BookingDto> {
         bookingDto.bookingId = id;
-        await this.bookingService.saveOrUpdateBooking(bookingDto);
-        return `Modified this booking ${bookingDto.bookingId}`;        
+        return await this.bookingService.saveOrUpdateBooking(bookingDto);
     }
     
     @Delete(':id')
-    async deleteBooking(@Param('id') id: string): Promise<string> {
-        await this.bookingService.deleteBooking(id);
-        return `Deleted this booking ${id}`
+    async deleteBooking(@Param('id') id: string): Promise<BookingDto> {
+        return await this.bookingService.deleteBooking(id);
     }
 }

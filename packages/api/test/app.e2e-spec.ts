@@ -3,6 +3,17 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { BookingDto } from './../src/models/dtos/booking.dto';
+import { CreateVehicleDto } from '../src/models/dtos/create-vehicle.dto';
+
+let currentVehicleId;
+let currentBookingId;
+
+function createVehicleDto(plate: string, brand: string){
+  const dto = new CreateVehicleDto();
+  dto.brand = brand;
+  dto.plate = plate;
+  return dto;
+}
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -23,35 +34,37 @@ describe('AppController (e2e)', () => {
       .expect('Hello World!');
   });
 
-  it('/api/bookings (GET)', () => {
+  it('/api/vehicles (POST)', () => {
     return request(app.getHttpServer())
-      .get('/api/bookings?limit=1')
+      .post('/api/vehicles')
+      .send(createVehicleDto("ABC123", "KIA"))
+      .expect(201).then(reponse => {
+        currentVehicleId = reponse.body.id;
+      });
+  });
+
+  it('/api/vehicles (GET)', () => {
+    return request(app.getHttpServer())
+      .get('/api/vehicles')
       .expect(200);
   });
 
-  it('/api/bookings/:id (GET)', () => {
+  it('/api/vehicles/:id (GET)', () => {
     return request(app.getHttpServer())
-      .get('/api/bookings/abc')
-      .expect(404);
+      .get(`/api/vehicles/${currentVehicleId}`)
+      .expect(200);
   });
 
   it('/api/bookings (POST)', () => {
     return request(app.getHttpServer())
       .post('/api/bookings')
-      .send(new BookingDto(null, "123", "ABC123", Date.now().toString()))
+      .send(new BookingDto(null, currentVehicleId, "ABC123", Date.now().toString()))
       .expect(201);
   });
 
-  it('/api/bookings (PUT)', () => {
+  it('/api/bookings (GET)', () => {
     return request(app.getHttpServer())
-      .put('/api/bookings/abc')
-      .send(new BookingDto(null, "123", "ABC123", "123456789"))
-      .expect(200);
-  });
-
-  it('/api/bookings (Delete)', () => {
-    return request(app.getHttpServer())
-      .delete('/api/bookings/abc')
+      .get('/api/bookings?limit=1')
       .expect(200);
   });
 });

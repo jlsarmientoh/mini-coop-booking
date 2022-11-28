@@ -1,5 +1,5 @@
 import { DTO } from "../dtos/dto";
 
-export interface Entity {
+export interface IEntity {
     toDTO(): DTO;
 }

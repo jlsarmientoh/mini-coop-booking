@@ -1,5 +1,3 @@
-import { Entity } from "../entities/entity";
+import { IEntity } from "../entities/entity";
 
-export interface DTO {
-    toEntity(): Entity;
-}
+export interface DTO { }
