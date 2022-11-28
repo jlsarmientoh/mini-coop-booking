@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Booking } from "../entities/booking.entity";
 import { DTO } from "./dto";
 
 export class BookingDto implements DTO {
@@ -26,8 +25,4 @@ export class BookingDto implements DTO {
             this.plate = plate;
             this.date = date;
         }
-    
-    toEntity(): Booking {
-        return new Booking(this.bookingId, this.vehicleId, this.plate, this.date);
-    }
 }

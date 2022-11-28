@@ -1,20 +1,21 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { BookingDto } from "src/models/dtos/booking.dto";
+import { Repository } from 'typeorm';
+import { BookingDto } from "../models/dtos/booking.dto";
 import { Booking } from "../models/entities/booking.entity";
-import { MongoRespository } from "../respositorioes/mongo.repository";
-import { SQLRepository } from "../respositorioes/sql.respository";
+import { Vehicle } from "../models/entities/vehicle.entity";
 
 @Injectable()
 export class BookingService {
 
     constructor(
-        private readonly mongoRespository: MongoRespository,
-        @Inject('SQL')
-        private readonly sqlRepository: SQLRepository) {}
+        @Inject('BOOKING_REPOSITORY')
+        private readonly booKingRepository: Repository<Booking>,
+        @Inject('VEHICLE_REPOSITORY') 
+        private readonly vehicleRepository: Repository<Vehicle>) {}
     
     async findBookings(limit: number): Promise<BookingDto[]> {
         try {
-            return (await this.sqlRepository.findAll(limit))
+            return (await this.booKingRepository.find())
             .map<BookingDto>((value) => { return value.toDTO()});
         } catch (error) {
             throw new Error(`Reason: ${error.message}`);
@@ -23,22 +24,29 @@ export class BookingService {
 
     async findBooking(id: string): Promise<BookingDto> {
         try {
-            return (await this.sqlRepository.find(id)).toDTO();
+            return (await this.booKingRepository.findOne({
+                where: { bookingId: id },
+                relations: {
+                    vehicle: true,
+                }
+            })).toDTO();
         } catch (error) {
             throw new Error(`Reason: ${error.message}`);
         }
     }
 
-    async saveOrUpdateBooking(booking: BookingDto): Promise<void> {
-        const entity: Booking = new Booking(booking.bookingId, booking.vehicleId, booking.plate, booking.date);
-        if(booking.bookingId == null) {
-            this.sqlRepository.save(entity);
-        } else {
-            this.sqlRepository.update(entity);
-        }
+    async saveOrUpdateBooking(booking: BookingDto): Promise<BookingDto> {
+        const entity: Booking = new Booking();
+        const vehicle = this.vehicleRepository.findOneBy({id: booking.vehicleId});
+        entity.bookingId = booking.bookingId;
+        entity.plate = booking.plate;
+        entity.date = booking.date;
+        entity.vehicle = await vehicle;
+        return (await this.booKingRepository.save(entity)).toDTO();
     }
 
-    async deleteBooking(id: string): Promise<void> {
-        this.sqlRepository.delete(id);
+    async deleteBooking(id: string): Promise<BookingDto> {
+        const bookingToDelete: Booking = await this.booKingRepository.findOneBy({bookingId: id});
+        return (await this.booKingRepository.remove(bookingToDelete)).toDTO();
     }
 }
