@@ -4,6 +4,7 @@ import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { BookingDto } from './../src/models/dtos/booking.dto';
 import { CreateVehicleDto } from '../src/models/dtos/create-vehicle.dto';
+import { report } from 'process';
 
 let currentVehicleId;
 let currentBookingId;
@@ -58,13 +59,30 @@ describe('AppController (e2e)', () => {
   it('/api/bookings (POST)', () => {
     return request(app.getHttpServer())
       .post('/api/bookings')
-      .send(new BookingDto(null, currentVehicleId, "ABC123", Date.now().toString()))
-      .expect(201);
+      .send(new BookingDto("", currentVehicleId, "ABC123", Date.now().toString()))
+      .expect(201).then( response => {
+        currentBookingId = response.body.bookingId;
+      });
   });
 
   it('/api/bookings (GET)', () => {
     return request(app.getHttpServer())
-      .get('/api/bookings?limit=1')
+      .post('/api/vehicles')
+      .send(createVehicleDto("ABC123", "KIA"))
+      .expect(201).then(reponse => {
+        currentVehicleId = reponse.body.id;
+      });
+  });
+
+  it('/api/vehicles (GET)', () => {
+    return request(app.getHttpServer())
+      .get('/api/vehicles')
+      .expect(200);
+  });
+
+  it('/api/vehicles/:id (GET)', () => {
+    return request(app.getHttpServer())
+      .get(`/api/bookings/${currentBookingId}`)
       .expect(200);
   });
 });

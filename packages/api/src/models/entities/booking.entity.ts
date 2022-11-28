@@ -19,6 +19,6 @@ export class Booking implements IEntity {
     date: string;
     
     toDTO(): BookingDto {
-        return new BookingDto(this.bookingId, this.vehicle.id, this.plate, this.date);
+        return new BookingDto(this.bookingId, this.vehicle?.id, this.plate, this.date);
     }
 }

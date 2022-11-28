@@ -19,7 +19,8 @@ function createMockBooking(id:string, vehicleId: string, plate: string, date: st
 
 describe('BookingService', () => {
   let service: BookingService;
-  let repository: Repository<Booking>;
+  let bookingRepository: Repository<Booking>;
+  let vehicleRepository: Repository<Vehicle>;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
@@ -27,7 +28,8 @@ describe('BookingService', () => {
       providers: [BookingService],
     }).compile();
 
-    repository = app.get<Repository<Booking>>('BOOKING_REPOSITORY');
+    bookingRepository = app.get<Repository<Booking>>('BOOKING_REPOSITORY');
+    vehicleRepository = app.get<Repository<Vehicle>>('VEHICLE_REPOSITORY');
     service = app.get<BookingService>(BookingService);
   });
 
@@ -45,7 +47,7 @@ describe('BookingService', () => {
         expected.push(item.toDTO());
       });
 
-      jest.spyOn(repository, 'find').mockImplementation(async () => mockResponse);
+      jest.spyOn(bookingRepository, 'find').mockImplementation(async () => mockResponse);
 
       const actual = await service.findBookings(limit);
 
@@ -59,7 +61,7 @@ describe('BookingService', () => {
       const mockResponse: Booking = createMockBooking("1", "1", "ABC123", "01/12/2022");
       const expected: BookingDto = mockResponse.toDTO();
 
-      jest.spyOn(repository, 'findOneBy').mockImplementation(async () => mockResponse);
+      jest.spyOn(bookingRepository, 'findOne').mockImplementation(async () => mockResponse);
 
       const actual = await service.findBooking("1");
 
@@ -72,28 +74,29 @@ describe('BookingService', () => {
       const mockResponse: Booking = createMockBooking("1", "1", "ABC123", "01/12/2022");
       const expected: BookingDto = mockResponse.toDTO();
 
-      jest.spyOn(repository, 'save').mockImplementation(async () => mockResponse);
-      jest.spyOn(repository, 'findOneBy').mockImplementation(async () => mockResponse);
+      jest.spyOn(bookingRepository, 'save').mockImplementation(async () => mockResponse);
+      jest.spyOn(bookingRepository, 'findOne').mockImplementation(async () => mockResponse);
+      jest.spyOn(vehicleRepository, 'findOneBy').mockImplementation(async () => mockResponse.vehicle);
 
       await service.saveOrUpdateBooking(new BookingDto(null, "1", "ABC123", "01/12/2022"));
       const actual = await service.findBooking("1");
 
       expect(actual).toStrictEqual(expected);
-      expect(repository.save).toHaveBeenCalledTimes(1);
+      expect(bookingRepository.save).toHaveBeenCalledTimes(1);
     });
 
     it('should update existing Booking', async () => {
       const mockResponse: Booking = createMockBooking("1", "1", "ABC123", "01/12/2022");
       const expected: BookingDto = mockResponse.toDTO();
 
-      jest.spyOn(repository, 'save').mockImplementation(async () => mockResponse);
-      jest.spyOn(repository, 'findOneBy').mockImplementation(async () => mockResponse);
+      jest.spyOn(bookingRepository, 'save').mockImplementation(async () => mockResponse);
+      jest.spyOn(bookingRepository, 'findOne').mockImplementation(async () => mockResponse);
 
       await service.saveOrUpdateBooking(expected);
       const actual = await service.findBooking("1");
 
       expect(actual).toStrictEqual(expected);
-      expect(repository.save).toHaveBeenCalledTimes(1);
+      expect(bookingRepository.save).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -101,12 +104,12 @@ describe('BookingService', () => {
     it('should delete Booking', async () => {
       const mockResponse: Booking = createMockBooking("1", "1", "ABC123", "01/12/2022");
 
-      jest.spyOn(repository, 'remove').mockImplementation(async () => mockResponse);
-      jest.spyOn(repository, 'findOneBy').mockImplementation(async () => mockResponse);
+      jest.spyOn(bookingRepository, 'remove').mockImplementation(async () => mockResponse);
+      jest.spyOn(bookingRepository, 'findOneBy').mockImplementation(async () => mockResponse);
 
       await service.deleteBooking("1");
       
-      expect(repository.remove).toHaveBeenCalledTimes(1);
+      expect(bookingRepository.remove).toHaveBeenCalledTimes(1);
     });
   });
 });

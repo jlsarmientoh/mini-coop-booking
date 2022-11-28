@@ -9,11 +9,13 @@ export class BookingService {
 
     constructor(
         @Inject('BOOKING_REPOSITORY')
-        private readonly repository: Repository<Booking>) {}
+        private readonly booKingRepository: Repository<Booking>,
+        @Inject('VEHICLE_REPOSITORY') 
+        private readonly vehicleRepository: Repository<Vehicle>) {}
     
     async findBookings(limit: number): Promise<BookingDto[]> {
         try {
-            return (await this.repository.find())
+            return (await this.booKingRepository.find())
             .map<BookingDto>((value) => { return value.toDTO()});
         } catch (error) {
             throw new Error(`Reason: ${error.message}`);
@@ -22,8 +24,11 @@ export class BookingService {
 
     async findBooking(id: string): Promise<BookingDto> {
         try {
-            return (await this.repository.findOneBy({
-                bookingId: id
+            return (await this.booKingRepository.findOne({
+                where: { bookingId: id },
+                relations: {
+                    vehicle: true,
+                }
             })).toDTO();
         } catch (error) {
             throw new Error(`Reason: ${error.message}`);
@@ -32,17 +37,16 @@ export class BookingService {
 
     async saveOrUpdateBooking(booking: BookingDto): Promise<BookingDto> {
         const entity: Booking = new Booking();
-        const vehicle: Vehicle = new Vehicle();
+        const vehicle = this.vehicleRepository.findOneBy({id: booking.vehicleId});
         entity.bookingId = booking.bookingId;
         entity.plate = booking.plate;
         entity.date = booking.date;
-        vehicle.id = booking.vehicleId;
-        entity.vehicle = vehicle;
-        return (await this.repository.save(entity)).toDTO();
+        entity.vehicle = await vehicle;
+        return (await this.booKingRepository.save(entity)).toDTO();
     }
 
     async deleteBooking(id: string): Promise<BookingDto> {
-        const bookingToDelete: Booking = await this.repository.findOneBy({bookingId: id});
-        return (await this.repository.remove(bookingToDelete)).toDTO();
+        const bookingToDelete: Booking = await this.booKingRepository.findOneBy({bookingId: id});
+        return (await this.booKingRepository.remove(bookingToDelete)).toDTO();
     }
 }
