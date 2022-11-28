@@ -1,17 +1,6 @@
-import { SQLRepository } from "../respositorioes/sql.respository";
 import { DataSource } from "typeorm";
 
 export const databaseProviders = [
-    {
-        provide: 'SQL',
-        useFactory: async () => {
-            const repository = new SQLRepository();
-            await repository.initDb();
-            await repository.populate();
-
-            return repository;
-        }
-    },
     {
         provide: 'DATA_SOURCE',
         useFactory: async () => {

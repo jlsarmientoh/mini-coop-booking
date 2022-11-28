@@ -3,8 +3,6 @@ import { BookingController } from './booking.controller';
 import { AppService } from '../services/app.service';
 import { BookingDto } from '../models/dtos/booking.dto';
 import { BookingService } from '../services/booking.service';
-import { SQLRepository } from '../respositorioes/sql.respository';
-import { MongoRespository } from '../respositorioes/mongo.repository';
 import { DatabaseModule } from '../database.module';
 
 describe('BookingController', () => {
@@ -15,7 +13,7 @@ describe('BookingController', () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [DatabaseModule],
       controllers: [BookingController],
-      providers: [AppService, BookingService, MongoRespository],
+      providers: [AppService, BookingService],
     }).compile();
 
     controller = app.get<BookingController>(BookingController);
@@ -45,29 +43,31 @@ describe('BookingController', () => {
       const actual = await controller.getBooking("1");
 
       expect(actual).toBe(expected);
+      expect(service.findBooking).toBeCalled();
     });
 
     it('should create a new booking', async () => {
-        const expectedResult = 'new booking created';
         const newBooking = new BookingDto(null, '0000-1111', 'ABC123', '01-12-2022');
-        jest.spyOn(service, 'saveOrUpdateBooking').mockImplementation(async () => {});
+        jest.spyOn(service, 'saveOrUpdateBooking').mockImplementation(async () => newBooking);
 
-        expect( await controller.createBooking(newBooking)).toBe(expectedResult);
+        expect( await controller.createBooking(newBooking)).toBe(newBooking);
+        expect(service.saveOrUpdateBooking).toBeCalled();
     });
 
     it('should modify a booking', async () => {
-        const expectedResult = 'Modified this booking 2222-3333';
         const editableBooking = new BookingDto('2222-3333', '0000-1111', 'ABC123', '01-12-2022');
-        jest.spyOn(service, 'saveOrUpdateBooking').mockImplementation(async () => {});
+        jest.spyOn(service, 'saveOrUpdateBooking').mockImplementation(async () => editableBooking);
 
-        expect( await controller.modifyBooking('2222-3333', editableBooking)).toBe(expectedResult);
+        expect( await controller.modifyBooking('2222-3333', editableBooking)).toBe(editableBooking);
+        expect(service.saveOrUpdateBooking).toBeCalled();
     });
 
     it('should delete a booking', async () => {
-        const expectedResult = 'Deleted this booking 2222-3333';
-        jest.spyOn(service, 'deleteBooking').mockImplementation(async () => {});
+        const removableBooking = new BookingDto('2222-3333', '0000-1111', 'ABC123', '01-12-2022');
+        jest.spyOn(service, 'deleteBooking').mockImplementation(async () => removableBooking);
 
-        expect( await controller.deleteBooking('2222-3333')).toBe(expectedResult);
+        expect( await controller.deleteBooking('2222-3333')).toBe(removableBooking);
+        expect(service.deleteBooking).toBeCalled();
     });
   });
 });

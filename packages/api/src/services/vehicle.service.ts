@@ -8,12 +8,14 @@ import { Vehicle } from '../models/entities/vehicle.entity';
 @Injectable()
 export class VehicleService {
     constructor(
-        @Inject('BOOKING_REPOSITORY') 
+        @Inject('VEHICLE_REPOSITORY') 
         private readonly repository: Repository<Vehicle>
     ) {}
 
     async create(createVehicleDto: CreateVehicleDto): Promise<VehicleDto> {
-        const newVehicle: Vehicle = createVehicleDto.toEntity();
+        const newVehicle: Vehicle = new Vehicle();
+        newVehicle.brand = createVehicleDto.brand;
+        newVehicle.plate = createVehicleDto.plate
         return (await this.repository.save(newVehicle)).toDTO();
     }
 

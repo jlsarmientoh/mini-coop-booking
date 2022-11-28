@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { VehicleDto } from '../dtos/vehicle.dto';
+import { Booking } from './booking.entity';
 import { IEntity } from './entity';
 
 @Entity()
@@ -14,13 +15,9 @@ export class Vehicle implements IEntity {
     @Column({length: 20})
     brand: string;
 
-    constructor(id: string, 
-        plate: string, 
-        brand: string) {
-        this.id = id;
-        this.plate = plate;
-        this.brand = brand;
-    }
+    @OneToMany(() => Booking, (booking) => booking.vehicle)
+    bookings: Booking[];
+
     toDTO(): VehicleDto {
         return new VehicleDto(this.id, this.plate, this.brand);
     }

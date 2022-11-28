@@ -1,20 +1,19 @@
 import { Inject, Injectable } from "@nestjs/common";
+import { Repository } from 'typeorm';
 import { BookingDto } from "../models/dtos/booking.dto";
 import { Booking } from "../models/entities/booking.entity";
-import { MongoRespository } from "../respositorioes/mongo.repository";
-import { SQLRepository } from "../respositorioes/sql.respository";
+import { Vehicle } from "../models/entities/vehicle.entity";
 
 @Injectable()
 export class BookingService {
 
     constructor(
-        private readonly mongoRespository: MongoRespository,
-        @Inject('SQL')
-        private readonly sqlRepository: SQLRepository) {}
+        @Inject('BOOKING_REPOSITORY')
+        private readonly repository: Repository<Booking>) {}
     
     async findBookings(limit: number): Promise<BookingDto[]> {
         try {
-            return (await this.sqlRepository.findAll(limit))
+            return (await this.repository.find())
             .map<BookingDto>((value) => { return value.toDTO()});
         } catch (error) {
             throw new Error(`Reason: ${error.message}`);
@@ -23,22 +22,27 @@ export class BookingService {
 
     async findBooking(id: string): Promise<BookingDto> {
         try {
-            return (await this.sqlRepository.find(id)).toDTO();
+            return (await this.repository.findOneBy({
+                bookingId: id
+            })).toDTO();
         } catch (error) {
             throw new Error(`Reason: ${error.message}`);
         }
     }
 
-    async saveOrUpdateBooking(booking: BookingDto): Promise<void> {
-        const entity: Booking = booking.toEntity();
-        if(booking.bookingId == null) {
-            this.sqlRepository.save(entity);
-        } else {
-            this.sqlRepository.update(entity);
-        }
+    async saveOrUpdateBooking(booking: BookingDto): Promise<BookingDto> {
+        const entity: Booking = new Booking();
+        const vehicle: Vehicle = new Vehicle();
+        entity.bookingId = booking.bookingId;
+        entity.plate = booking.plate;
+        entity.date = booking.date;
+        vehicle.id = booking.vehicleId;
+        entity.vehicle = vehicle;
+        return (await this.repository.save(entity)).toDTO();
     }
 
-    async deleteBooking(id: string): Promise<void> {
-        this.sqlRepository.delete(id);
+    async deleteBooking(id: string): Promise<BookingDto> {
+        const bookingToDelete: Booking = await this.repository.findOneBy({bookingId: id});
+        return (await this.repository.remove(bookingToDelete)).toDTO();
     }
 }
