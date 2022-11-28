@@ -67,11 +67,20 @@ describe('AppController (e2e)', () => {
 
   it('/api/bookings (GET)', () => {
     return request(app.getHttpServer())
-      .get('/api/bookings?limit=1')
+      .post('/api/vehicles')
+      .send(createVehicleDto("ABC123", "KIA"))
+      .expect(201).then(reponse => {
+        currentVehicleId = reponse.body.id;
+      });
+  });
+
+  it('/api/vehicles (GET)', () => {
+    return request(app.getHttpServer())
+      .get('/api/vehicles')
       .expect(200);
   });
 
-  it('/api/bookings/:id (GET)', () => {
+  it('/api/vehicles/:id (GET)', () => {
     return request(app.getHttpServer())
       .get(`/api/bookings/${currentBookingId}`)
       .expect(200);
