@@ -26,7 +26,8 @@ export class VehicleService {
     }
 
     async findOne(id: string): Promise<VehicleDto> {
-        return (await this.repository.findOneBy({id: id})).toDTO();
+        const result: Vehicle = await this.repository.findOneBy({id: id}); 
+        return (result) ? result.toDTO() : null;
     }
     
     async update(id: string, updateVehicleDto: UpdateVehicleDto): Promise<VehicleDto> {
