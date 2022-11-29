@@ -20,17 +20,19 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 export default function BookingTable() {
     const [snackBar, setSnackBar] = React.useState({open: false, severity: '', message: ''});
     const [rows, setRows] = React.useState([]);
+
+    const getBookings = async () => {
+      try {
+          const response = await axios.get('http://localhost:3001/api/bookings?limit=10');
+          console.log(JSON.stringify(response.data));
+          setRows(response.data)
+      } catch (error) {
+          console.log(`Could not load data: ${error}`);
+          setRows([])
+      }
+    };
+
     React.useEffect(() => {
-        async function getBookings() {
-            try {
-                const response = await axios.get('http://localhost:3001/api/bookings?limit=10');
-                console.log(JSON.stringify(response.data));
-                setRows(response.data)
-            } catch (error) {
-                console.log(`Could not load data: ${error}`);
-                setRows([])
-            }
-        }
         getBookings();
     },[]);
 
@@ -49,8 +51,9 @@ export default function BookingTable() {
       if (reason === 'clickaway') {
         return;
       }
-  
+
       setSnackBar({open: false, severity: '', message: ''});
+      getBookings();
     };
 
   return (

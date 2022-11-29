@@ -13,7 +13,6 @@ import BookingForm from '../Booking/BookingForm';
 import Divider from '@mui/material/Divider';
 import DirectionsCarFilledRoundedIcon from '@mui/icons-material/DirectionsCarFilledRounded';
 
-
 export default function VehicleList() {
     const [vehicles, setVehicles] = React.useState([]);
     const [currentVehicle, setCurrentVehicle] = React.useState([]);
@@ -28,6 +27,7 @@ export default function VehicleList() {
     const handleClose = (e) => {
         e.preventDefault();
         setOpenVehicle(false);
+        getVehicles();
     };
 
     const handleClickOpenBooking = (e, vehicle) => {
@@ -41,21 +41,23 @@ export default function VehicleList() {
         setOpenBooking(false);
     };
 
-    React.useEffect(() => {
-        async function getVehicles() {
-            try {
-                const response = await axios.get('http://localhost:3001/api/vehicles');
-                console.log(JSON.stringify(response.data));
-                setVehicles(response.data)
-            } catch (error) {
-                console.log(`Could not load data: ${error}`);
-                setVehicles([])
-            }
+    const getVehicles = async () => {
+        try {
+            const response = await axios.get('http://localhost:3001/api/vehicles');
+            console.log(JSON.stringify(response.data));
+            setVehicles(response.data)
+        } catch (error) {
+            console.log(`Could not load data: ${error}`);
+            setVehicles([])
         }
+    };
+
+    React.useEffect(() => {  
         getVehicles();
     },[]);
 
     return (
+        <div>
         <Paper>
             {vehicles.map((vehicle) => (
                 <Card sx={{ minWidth: 275 }} key={vehicle.id}>
@@ -76,13 +78,15 @@ export default function VehicleList() {
                     <Divider light />
                 </Card>
             ))}
-            <Box sx={{ '& > :not(style)': { m: 1 } }}>
-                <Fab color="primary" aria-label="add" onClick={handleClickOpen}>
-                    <DirectionsCarFilledRoundedIcon />
-                </Fab>
-            </Box>
+           
             <VehicleForm open={openVehicle} onClose={handleClose}/>
             <BookingForm open={openBooking} onClose={handleCloseBooking} vehicle={currentVehicle}/>
         </Paper>
+         <Box sx={{ '& > :not(style)': { m: 1 } }}>
+            <Fab color="primary" aria-label="add" onClick={handleClickOpen}>
+                <DirectionsCarFilledRoundedIcon />
+            </Fab>
+        </Box>
+        </div>
     )
 }
