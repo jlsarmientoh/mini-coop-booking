@@ -32,6 +32,8 @@ Please run the following commands from root directory:
 
 - [NodeJS](https://nodejs.org/)
 - [NestJS](https://nestjs.com/)
+- [TypeORM](https://typeorm.io/)
+- [SQLite](https://www.sqlite.org/)
 
 ## FrontEnd
 
