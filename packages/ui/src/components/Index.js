@@ -6,10 +6,12 @@ import {
     Routes,
     Route
 } from "react-router-dom";
+import NavBar from './Navbar/NavBar';
 
 export default function Index(props) {
     return (
         <div>
+            <NavBar/>
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<VehicleList />}></Route>
