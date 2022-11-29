@@ -10,20 +10,34 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import VehicleForm from './VehicleForm';
+import BookingForm from '../Booking/BookingForm';
 
 
 export default function VehicleList() {
     const [vehicles, setVehicles] = React.useState([]);
-    const [open, setOpen] = React.useState(false);
+    const [currentVehicle, setCurrentVehicle] = React.useState([]);
+    const [openVehicle, setOpenVehicle] = React.useState(false);
+    const [openBooking, setOpenBooking] = React.useState(false);
 
     const handleClickOpen = (e) => {
         e.preventDefault();
-        setOpen(true);
+        setOpenVehicle(true);
     };
 
     const handleClose = (e) => {
         e.preventDefault();
-        setOpen(false);
+        setOpenVehicle(false);
+    };
+
+    const handleClickOpenBooking = (e, vehicle) => {
+        e.preventDefault();
+        setCurrentVehicle(vehicle);
+        setOpenBooking(true);
+    };
+
+    const handleCloseBooking = (e) => {
+        e.preventDefault();
+        setOpenBooking(false);
     };
 
     React.useEffect(() => {
@@ -56,8 +70,9 @@ export default function VehicleList() {
                         </Typography>
                     </CardContent>
                     <CardActions>
-                        <Button size="small">Book this car</Button>
+                        <Button size="small" onClick={(e) => handleClickOpenBooking(e, vehicle)}>Book this car</Button>
                     </CardActions>
+                    
                 </Card>
             ))}
             <Box sx={{ '& > :not(style)': { m: 1 } }}>
@@ -65,7 +80,8 @@ export default function VehicleList() {
                     <AddIcon />
                 </Fab>
             </Box>
-            <VehicleForm open={open} onClose={handleClose}/>
+            <VehicleForm open={openVehicle} onClose={handleClose}/>
+            <BookingForm open={openBooking} onClose={handleCloseBooking} vehicle={currentVehicle}/>
         </Paper>
     )
 }

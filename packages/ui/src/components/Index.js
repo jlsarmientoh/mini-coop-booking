@@ -15,6 +15,7 @@ export default function Index(props) {
         <div>
             <BrowserRouter>
                 <Routes>
+                    <Route path="/" element={<VehicleList />}></Route>
                     <Route path="/vehicles" element={<VehicleList />}></Route>
                     <Route path="/vehicle/new" element={<VehicleForm />}></Route>
                     <Route path="/vehicle/:id" element={<Vehicle />}></Route>
