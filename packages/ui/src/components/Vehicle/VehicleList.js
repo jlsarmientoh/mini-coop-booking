@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
 import Paper from '@mui/material/Paper';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -11,6 +10,8 @@ import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import VehicleForm from './VehicleForm';
 import BookingForm from '../Booking/BookingForm';
+import Divider from '@mui/material/Divider';
+import DirectionsCarFilledRoundedIcon from '@mui/icons-material/DirectionsCarFilledRounded';
 
 
 export default function VehicleList() {
@@ -72,12 +73,12 @@ export default function VehicleList() {
                     <CardActions>
                         <Button size="small" onClick={(e) => handleClickOpenBooking(e, vehicle)}>Book this car</Button>
                     </CardActions>
-                    
+                    <Divider light />
                 </Card>
             ))}
             <Box sx={{ '& > :not(style)': { m: 1 } }}>
                 <Fab color="primary" aria-label="add" onClick={handleClickOpen}>
-                    <AddIcon />
+                    <DirectionsCarFilledRoundedIcon />
                 </Fab>
             </Box>
             <VehicleForm open={openVehicle} onClose={handleClose}/>

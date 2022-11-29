@@ -1,8 +1,5 @@
-import Booking from './Booking/Booking';
+import * as React from 'react';
 import BookingTable from './Booking/BookingTable';
-import BookingForm from './Booking/BookingForm';
-import Vehicle from './Vehicle/Vehicle';
-import VehicleForm from './Vehicle/VehicleForm';
 import VehicleList from './Vehicle/VehicleList';
 import {
     BrowserRouter,
@@ -17,11 +14,7 @@ export default function Index(props) {
                 <Routes>
                     <Route path="/" element={<VehicleList />}></Route>
                     <Route path="/vehicles" element={<VehicleList />}></Route>
-                    <Route path="/vehicle/new" element={<VehicleForm />}></Route>
-                    <Route path="/vehicle/:id" element={<Vehicle />}></Route>
                     <Route path="/bookings" element={<BookingTable />}></Route>
-                    <Route path="/bookings/new" element={<BookingForm />}></Route>
-                    <Route path="/bookings/:id" element={<Booking />}></Route>
                 </Routes>
             </BrowserRouter>
         </div>
