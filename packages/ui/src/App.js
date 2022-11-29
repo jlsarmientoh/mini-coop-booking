@@ -1,13 +1,11 @@
 import './App.css';
-import BookingTable from './components/BookingTable';
-import BookingForm from './components/BookingForm';
+import Index from './components/Index';
+
 
 function App() {
   return (
      <div className="App">
-      <BookingTable/>
-      <p></p>
-      <BookingForm/>
+      <Index />
     </div>
   );
 }

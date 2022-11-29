@@ -45,5 +45,5 @@ export default function BookingTable() {
         </TableBody>
       </Table>
     </TableContainer>
-  );
+  )
 }
