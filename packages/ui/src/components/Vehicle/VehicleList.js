@@ -16,11 +16,13 @@ export default function VehicleList() {
     const [vehicles, setVehicles] = React.useState([]);
     const [open, setOpen] = React.useState(false);
 
-    const handleClickOpen = () => {
+    const handleClickOpen = (e) => {
+        e.preventDefault();
         setOpen(true);
     };
 
-    const handleSubmit = () => {
+    const handleClose = (e) => {
+        e.preventDefault();
         setOpen(false);
     };
 
@@ -41,7 +43,7 @@ export default function VehicleList() {
     return (
         <Paper>
             {vehicles.map((vehicle) => (
-                <Card sx={{ minWidth: 275 }}>
+                <Card sx={{ minWidth: 275 }} key={vehicle.id}>
                     <CardContent>
                         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                         Available!
@@ -63,7 +65,7 @@ export default function VehicleList() {
                     <AddIcon />
                 </Fab>
             </Box>
-            <VehicleForm open={open}></VehicleForm>
+            <VehicleForm open={open} onClose={handleClose}/>
         </Paper>
     )
 }
